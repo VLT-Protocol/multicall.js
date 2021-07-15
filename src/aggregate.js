@@ -68,7 +68,13 @@ export default async function aggregate(calls, config) {
       target,
       returns
     };
+  }).filter(call => {
+    // call.returns[0].length === 2 &&
+    // call.returns[0].find(ret => typeof ret === 'string' && ret.match('EDG'))
+    return call.method === 'balanceOf(address)' ? false : true;
   });
+
+  console.log('Multicall calls:', calls);
 
   const callDataBytes = makeMulticallData(calls, false);
   const outerResults = await ethCall(callDataBytes, config);
